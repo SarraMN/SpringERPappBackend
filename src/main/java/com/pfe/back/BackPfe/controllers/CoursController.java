@@ -29,8 +29,8 @@ public class CoursController {
 	
 	
 	@GetMapping("")
-    public List<Cours> getAllCourss(){
-	   return coursService.getAllCourss();
+    public List<Cours> getAllCours(){
+	   return coursService.getAllCours();
 }
     @PutMapping("/{id}")
 	public Cours update(@PathVariable Integer id ,@RequestBody Cours cours) {
@@ -47,5 +47,10 @@ public class CoursController {
     @GetMapping("/{id}")
 	public Cours getCoursById(@PathVariable Long id) {
 		return coursService.findById(id);
+	}
+    
+    @GetMapping("/formation/{idFormation}")
+    public List<Cours> getCoursByIdFromation(@PathVariable Long idFormation){
+    	return coursService.getCoursByIdFromation(idFormation);
 	}
 }

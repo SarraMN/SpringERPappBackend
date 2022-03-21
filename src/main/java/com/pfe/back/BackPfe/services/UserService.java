@@ -19,6 +19,15 @@ public interface UserService {
 	public User update(Long id,User user);
 
 	public User update_motdepasse(long id, String password);
+	
+	public List<User> getUsersSaufAdmin();
+	
+	public List<User> getlisteFormateurs();
+	
+	public List<User> getlisteCandidats();
+
+
+	
 
 
 }

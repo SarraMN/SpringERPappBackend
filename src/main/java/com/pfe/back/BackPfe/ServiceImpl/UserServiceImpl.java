@@ -1,5 +1,6 @@
 package  com.pfe.back.BackPfe.ServiceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,8 +79,55 @@ public class UserServiceImpl implements UserService{
 		{
 			User user2=user1.get();
 			user2.setPassword(passwordEncoder.encode(password));
-			return userRepo.save(user2);		}
+			return userRepo.save(user2);		
+			}
 		return null;
+	}
+
+	@Override
+	public List<User> getUsersSaufAdmin() {
+		List<User> Users = userRepo.findAll();
+		
+		List<User> UsersSansAdmin = new ArrayList<User>();
+		for(int i=0;i<Users.size();i++) {
+			
+			if(Users.get(i).getAuthority().getRoleName().equals("User_Professer") || Users.get(i).getAuthority().getRoleName().equals("User_Candidat")) 
+			{
+				UsersSansAdmin.add(Users.get(i));
+			}
+		}
+		return UsersSansAdmin;
+	}
+
+	@Override
+	public List<User> getlisteFormateurs() {
+		
+	List<User> Users = userRepo.findAll();
+		
+		List<User> formateurs = new ArrayList<User>();
+		for(int i=0;i<Users.size();i++) {
+			
+			if(Users.get(i).getAuthority().getRoleName().equals("User_Professer")) 
+			{
+				formateurs.add(Users.get(i));
+			}
+		}
+		return formateurs;	
+		}
+
+	@Override
+	public List<User> getlisteCandidats() {
+		List<User> Users = userRepo.findAll();
+		
+		List<User> candidats = new ArrayList<User>();
+		for(int i=0;i<Users.size();i++) {
+			
+			if(Users.get(i).getAuthority().getRoleName().equals("User_Candidat")) 
+			{
+				candidats.add(Users.get(i));
+			}
+		}
+		return candidats;	
 	}
 
 	

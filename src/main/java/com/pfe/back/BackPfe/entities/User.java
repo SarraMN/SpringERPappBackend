@@ -1,21 +1,14 @@
 package  com.pfe.back.BackPfe.entities;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,6 +21,45 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 public class User implements UserDetails {
 	
+
+	
+
+	public String getEtatCompte() {
+		return etatCompte;
+	}
+
+	public void setEtatCompte(String etatCompte) {
+		this.etatCompte = etatCompte;
+	}
+
+	public User(long id, String userName, String password, String nom, String prenom, String email,
+			Date date_de_naissance, String numero_de_telephone, boolean enabled, String etat_civil, String genre,
+			String adresse, String etatCompte, Authority authority, Date lastLogin, Date createdAt, Date updatedAt) {
+		super();
+		this.id = id;
+		this.userName = userName;
+		this.password = password;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.date_de_naissance = date_de_naissance;
+		this.numero_de_telephone = numero_de_telephone;
+		this.enabled = enabled;
+		this.etat_civil = etat_civil;
+		this.genre = genre;
+		this.adresse = adresse;
+		this.etatCompte = etatCompte;
+		this.authority = authority;
+		this.lastLogin = lastLogin;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+
+	public User() {
+		
+	}
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -65,7 +97,10 @@ public class User implements UserDetails {
 	
 	@Column(name = "Adresse")
 	private String adresse;
-
+	
+	//Pour voir si le compte est autorisé ou pas
+	@Column(name = "Etat_Compte")
+	private String etatCompte ="Non Active" ;
 	
 	
 	/*
@@ -76,15 +111,21 @@ public class User implements UserDetails {
 	 * = @JoinColumn(referencedColumnName ="id")) private List<Authority>
 	 * authorities;
 	 */
-	 
-	  
-	  
 	
 	  @ManyToOne() 
 	  private Authority authority;
 	 
+	@Column(name = "Last_login")
+		private Date lastLogin;
 	
-	
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
 	@Column(name = "CREATED_ON")
 	private Date createdAt;
 

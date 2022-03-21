@@ -39,7 +39,9 @@ public class Formation {
 	private Collection<Cours> listeCours;
 	
 	
+	private String categorie;
 	
+	@JsonIgnore
 	public Collection<Cours> getListeCours() {
 		return listeCours;
 	}
@@ -50,17 +52,25 @@ public class Formation {
 		this.listeCours = listeCours;
 	}
 
-
-
-
-
-	public Formation(long id, String titre, Date dateCreation, User auteur, Collection<Cours> listeCours) {
+	public Formation(long id, String titre, Date dateCreation, User auteur, Collection<Cours> listeCours,
+			String categorie) {
 		super();
 		this.id = id;
 		this.titre = titre;
 		this.dateCreation = dateCreation;
 		this.auteur = auteur;
 		this.listeCours = listeCours;
+		this.categorie = categorie;
+	}
+
+
+	public String getCategorie() {
+		return categorie;
+	}
+
+
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
 	}
 
 

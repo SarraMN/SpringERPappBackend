@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +15,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.pfe.back.BackPfe.entities.User;
+import com.pfe.back.BackPfe.services.UserService;
+
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
+	@Autowired
+	UserService userService;
+	
 	
 	private UserDetailsService userDetailsService;
 	private JWTTokenHelper jwtTokenHelper;
@@ -40,19 +47,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 			String userName=jwtTokenHelper.getUsernameFromToken(authToken);
 			
-			if(null!=userName) {
-				System.out.println(userName);
-	
+			if(null!=userName) {            
 				UserDetails userDetails=userDetailsService.loadUserByUsername(userName);
-				
+				System.out.println(userName);
 				if(jwtTokenHelper.validateToken(authToken, userDetails)) {
 					
 					UsernamePasswordAuthenticationToken authentication=new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 					authentication.setDetails(new WebAuthenticationDetails(request));
 					
-					SecurityContextHolder.getContext().setAuthentication(authentication);
-					
-					
+					SecurityContextHolder.getContext().setAuthentication(authentication);				
 					
 				}
 				

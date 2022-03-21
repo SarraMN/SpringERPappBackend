@@ -43,7 +43,7 @@ public class InscriptionController {
 	 
 	
 	  @PostMapping("/signup") public ResponseEntity<?> SignUp(@RequestBody UserInfo
-	  U) { System.out.println(U.getRoles());
+	  U) { 
 	  
 	  
 	  Authority A= authorityService.findByRoleName((String) U.getRoles());

@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.security.spec.InvalidKeySpecException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,10 +44,13 @@ public class AuthenticationController {
 		
 		final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUserName(), authenticationRequest.getPassword()));
-
+         
+		
+		User user=(User)authentication.getPrincipal();
+		if(user.getEtatCompte().equals("Active")) {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		User user=(User)authentication.getPrincipal();
+		
 		String jwtToken=jWTTokenHelper.generateToken(user.getUsername());
 
 		LoginResponse response=new LoginResponse();
@@ -54,6 +58,8 @@ public class AuthenticationController {
 		
 
 		return ResponseEntity.ok(response);
+		}
+		else return new ResponseEntity<>("Compte non encore autorisé",HttpStatus.BAD_REQUEST);
 	}
 	
 	@GetMapping("/auth/userinfo")

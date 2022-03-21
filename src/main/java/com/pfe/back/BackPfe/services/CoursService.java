@@ -7,7 +7,7 @@ import com.pfe.back.BackPfe.entities.Cours;
 
 public interface CoursService {
 
-public List<Cours> getAllCourss();
+public List<Cours> getAllCours();
 	
 	public Cours updateCours(Cours cours);
 	
@@ -16,4 +16,6 @@ public List<Cours> getAllCourss();
 	public Cours addCours(Cours cours);
 
 	public Cours findById(Long id);
+	
+	public List<Cours> getCoursByIdFromation(Long idFormation);
 }
