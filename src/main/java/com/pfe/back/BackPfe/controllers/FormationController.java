@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import  com.pfe.back.BackPfe.entities.Formation;
 import  com.pfe.back.BackPfe.services.FormationService;
 
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api/formation")
 public class FormationController {
@@ -40,7 +40,7 @@ public class FormationController {
 	public void delete(@PathVariable Long id) {
     	formationService.deleteFormation(id);
     }
-    @PostMapping
+    @PostMapping("")
 	public Formation add(@RequestBody Formation formation) {
     	return formationService.addFormation(formation);
     }
@@ -48,4 +48,8 @@ public class FormationController {
 	public Formation getFormationById(@PathVariable Long id) {
 		return formationService.findById(id);
 	}
+    @PutMapping("/archiver/{id}")
+   	public void archiverCours(@PathVariable Long id) {
+    	formationService.ArchiverFormation(id);
+   	}
 }

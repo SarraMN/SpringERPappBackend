@@ -16,4 +16,6 @@ public List<Formation> getAllFormations();
 	public Formation addFormation(Formation formation);
 
 	public Formation findById(Long id);
+	
+	public void ArchiverFormation(Long id);
 }

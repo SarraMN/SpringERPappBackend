@@ -17,7 +17,7 @@ import com.pfe.back.BackPfe.responses.MessageResponse;
 import com.pfe.back.BackPfe.responses.UserInfo;
 import com.pfe.back.BackPfe.services.AuthorityService;
 import com.pfe.back.BackPfe.services.UserService;
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 
 @RestController
 @RequestMapping("/api")

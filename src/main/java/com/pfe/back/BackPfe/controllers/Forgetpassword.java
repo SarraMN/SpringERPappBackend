@@ -1,6 +1,7 @@
 package  com.pfe.back.BackPfe.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +13,7 @@ import  com.pfe.back.BackPfe.entities.User;
 import  com.pfe.back.BackPfe.services.AuthorityService;
 import  com.pfe.back.BackPfe.services.UserService;
 
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 
 @RestController
 @RequestMapping("/Forgetpassword")

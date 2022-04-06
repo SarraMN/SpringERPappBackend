@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.pfe.back.BackPfe.entities.Formation;
 import  com.pfe.back.BackPfe.entities.User;
 import  com.pfe.back.BackPfe.repository.UserDetailsRepository;
 import  com.pfe.back.BackPfe.services.UserService;
@@ -129,6 +130,11 @@ public class UserServiceImpl implements UserService{
 		}
 		return candidats;	
 	}
-
+   
+	@Override
+	public User findById(Long id) {
+		Optional<User> user = userRepo.findById(id);
+	     return  user.isPresent() ? user.get() : null;
+	}
 	
 }

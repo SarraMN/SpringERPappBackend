@@ -17,24 +17,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Table(name = "AUTH_USER_DETAILS")
 @Entity
 public class User implements UserDetails {
 	
 
-	
 
-	public String getEtatCompte() {
-		return etatCompte;
-	}
-
-	public void setEtatCompte(String etatCompte) {
-		this.etatCompte = etatCompte;
-	}
 
 	public User(long id, String userName, String password, String nom, String prenom, String email,
 			Date date_de_naissance, String numero_de_telephone, boolean enabled, String etat_civil, String genre,
-			String adresse, String etatCompte, Authority authority, Date lastLogin, Date createdAt, Date updatedAt) {
+			String adresse, Authority authority, Date lastLogin, Date createdAt, Date updatedAt) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -48,7 +42,6 @@ public class User implements UserDetails {
 		this.etat_civil = etat_civil;
 		this.genre = genre;
 		this.adresse = adresse;
-		this.etatCompte = etatCompte;
 		this.authority = authority;
 		this.lastLogin = lastLogin;
 		this.createdAt = createdAt;
@@ -79,7 +72,8 @@ public class User implements UserDetails {
 	@Column(name = "email")
 	private String email;
 	
-	@DateTimeFormat (pattern = "Yyyy-mm-dd")
+	
+	@DateTimeFormat (pattern = "yyyy-MM-dd")
 	@Column(name = "Date_de_naissance")
 	private Date date_de_naissance;
 	
@@ -97,11 +91,7 @@ public class User implements UserDetails {
 	
 	@Column(name = "Adresse")
 	private String adresse;
-	
-	//Pour voir si le compte est autorisé ou pas
-	@Column(name = "Etat_Compte")
-	private String etatCompte ="Non Active" ;
-	
+
 	
 	/*
 	 * @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -215,11 +205,12 @@ public class User implements UserDetails {
 	}
 
 	
-
+	 @JsonFormat(pattern = "yyyy-MM-dd")
 	public Date getDate_de_naissance() {
 		return date_de_naissance;
 	}
-
+    
+	 @JsonFormat(pattern = "yyyy-MM-dd")
 	public void setDate_de_naissance(Date date_de_naissance) {
 		this.date_de_naissance = date_de_naissance;
 	}

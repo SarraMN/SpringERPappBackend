@@ -60,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint).and()
 				.authorizeRequests((request) -> request.antMatchers("/api/v1/auth/login", "/api/signup","/mail/Envoie","/Forgetpassword/sendmail","/Forgetpassword/update").permitAll()
-						/*.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated()*/)
+						.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
 				.addFilterBefore(new JWTAuthenticationFilter(userService, jWTTokenHelper),
 						UsernamePasswordAuthenticationFilter.class);
 

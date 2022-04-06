@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import  com.pfe.back.BackPfe.entities.Cours;
 import  com.pfe.back.BackPfe.services.CoursService;
 
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api/cours")
 public class CoursController {
@@ -53,4 +53,8 @@ public class CoursController {
     public List<Cours> getCoursByIdFromation(@PathVariable Long idFormation){
     	return coursService.getCoursByIdFromation(idFormation);
 	}
+    @PutMapping("/archiver/{id}")
+   	public void archiverCours(@PathVariable Long id) {
+       	 coursService.ArchiverCours(id);
+   	}
 }

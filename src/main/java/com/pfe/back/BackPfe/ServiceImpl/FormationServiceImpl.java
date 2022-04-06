@@ -1,11 +1,14 @@
 package  com.pfe.back.BackPfe.ServiceImpl;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pfe.back.BackPfe.entities.Cours;
 import  com.pfe.back.BackPfe.entities.Formation;
 import  com.pfe.back.BackPfe.repository.FormationRepo;
 import  com.pfe.back.BackPfe.services.FormationService;
@@ -24,6 +27,10 @@ public class FormationServiceImpl implements FormationService{
 
 	@Override
 	public Formation updateFormation(Formation formation) {
+		Calendar calendar = Calendar.getInstance();
+		  
+		Date dateObj = calendar.getTime();
+		formation.setDateMdf(dateObj);
 		return formationRepository.save(formation);
 	}
 
@@ -35,7 +42,13 @@ public class FormationServiceImpl implements FormationService{
 	@Override
 	public Formation addFormation(Formation formation) {
 	
+		Calendar calendar = Calendar.getInstance();
+		  
+		Date dateObj = calendar.getTime();
+		formation.setDateCreation(dateObj);
+		formation.setDateMdf(dateObj);
 		return formationRepository.save(formation);
+		
 
 	}
 
@@ -43,6 +56,22 @@ public class FormationServiceImpl implements FormationService{
 	public Formation findById(Long id) {
 		Optional<Formation> formation = formationRepository.findById(id);
 	     return  formation.isPresent() ? formation.get() : null;
+	}
+
+	@Override
+	public void ArchiverFormation(Long id) {
+		Optional<Formation> formation = formationRepository.findById(id);
+		if(formation.isPresent()) {
+			Formation formation1=formation.get();
+			if(formation1.getEtat().equals("Non archivé")) {
+				formation1.setEtat("Archivé");
+				
+			}
+			else formation1.setEtat("Non archivé");
+			formationRepository.save(formation1);
+		}
+		 
+		
 	}
 
 

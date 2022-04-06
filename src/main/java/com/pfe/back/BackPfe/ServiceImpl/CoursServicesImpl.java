@@ -1,6 +1,8 @@
 package  com.pfe.back.BackPfe.ServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +29,10 @@ public class CoursServicesImpl implements CoursService{
 
 	@Override
 	public Cours updateCours(Cours cours) {
+		Calendar calendar = Calendar.getInstance();
+		  
+		Date dateObj = calendar.getTime();
+		cours.setDateMdf(dateObj);
 		return coursRepository.save(cours);
 	}
 
@@ -38,6 +44,12 @@ public class CoursServicesImpl implements CoursService{
 	@Override
 	public Cours addCours(Cours cours) {
 	
+
+		Calendar calendar = Calendar.getInstance();
+		  
+		Date dateObj = calendar.getTime();
+		cours.setDateCreation(dateObj);
+		cours.setDateMdf(dateObj);
 		return coursRepository.save(cours);
 
 	}
@@ -61,6 +73,22 @@ public class CoursServicesImpl implements CoursService{
          }
 		return listeCoursfomation;
 	}
+
+	@Override
+	public void ArchiverCours(Long id) {
+		Optional<Cours> cours = coursRepository.findById(id);
+		if(cours.isPresent()) {
+			Cours cours1=cours.get();
+			if(cours1.getEtat().equals("Non archivé")) {
+				cours1.setEtat("Archivé");
+				
+			}
+			else cours1.setEtat("Non archivé");
+			coursRepository.save(cours1);
+		}
+		 
+	}
+
 
 
 }

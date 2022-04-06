@@ -18,4 +18,6 @@ public List<Cours> getAllCours();
 	public Cours findById(Long id);
 	
 	public List<Cours> getCoursByIdFromation(Long idFormation);
+	
+	public void ArchiverCours(Long id);
 }

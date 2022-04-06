@@ -25,7 +25,7 @@ import  com.pfe.back.BackPfe.requests.AuthenticationRequest;
 import  com.pfe.back.BackPfe.responses.LoginResponse;
 import  com.pfe.back.BackPfe.responses.UserInfo;
 
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1")
 public class AuthenticationController {
@@ -47,7 +47,7 @@ public class AuthenticationController {
          
 		
 		User user=(User)authentication.getPrincipal();
-		if(user.getEtatCompte().equals("Active")) {
+	
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		
@@ -58,8 +58,7 @@ public class AuthenticationController {
 		
 
 		return ResponseEntity.ok(response);
-		}
-		else return new ResponseEntity<>("Compte non encore autorisé",HttpStatus.BAD_REQUEST);
+		
 	}
 	
 	@GetMapping("/auth/userinfo")
@@ -68,6 +67,7 @@ public class AuthenticationController {
 		
 		UserInfo userInfo= new UserInfo();
 	    userInfo.setNom(userObj.getNom());
+	    userInfo.setId(userObj.getId());
 		userInfo.setPrenom(userObj.getPrenom());
 		userInfo.setDate_de_naissance(userObj.getDate_de_naissance());
 		userInfo.setNumero_de_telephone(userObj.getNumero_de_telephone());

@@ -1,8 +1,8 @@
 package com.pfe.back.BackPfe.entities;
 
 import java.awt.List;
-import java.sql.Date;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Table(name = "Formation")
@@ -32,8 +33,18 @@ public class Formation {
 	@DateTimeFormat (pattern = "Yyyy-mm-dd")
 	private Date dateCreation;
 	
+	@Column(name = "Date_Modification")
+	@DateTimeFormat (pattern = "Yyyy-mm-dd")
+	private Date dateMdf;
+	
 	@ManyToOne
 	private User auteur;
+	
+	@Column(columnDefinition="TEXT")
+	private String description;
+	
+	@Column(columnDefinition="TEXT")
+	private String info;
 	
 	@OneToMany (mappedBy="formation", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private Collection<Cours> listeCours;
@@ -41,6 +52,41 @@ public class Formation {
 	
 	private String categorie;
 	
+	private float prix;
+	
+	private int nbrCours;
+	
+	private String etat;
+
+
+	public String getEtat() {
+		return etat;
+	}
+
+
+	public void setEtat(String etat) {
+		this.etat = etat;
+	}
+
+
+	public Formation(long id, String titre, Date dateCreation, Date dateMdf, User auteur, String description,
+			String info, Collection<Cours> listeCours, String categorie, float prix, int nbrCours, String etat) {
+		super();
+		this.id = id;
+		this.titre = titre;
+		this.dateCreation = dateCreation;
+		this.dateMdf = dateMdf;
+		this.auteur = auteur;
+		this.description = description;
+		this.info = info;
+		this.listeCours = listeCours;
+		this.categorie = categorie;
+		this.prix = prix;
+		this.nbrCours = nbrCours;
+		this.etat = etat;
+	}
+
+
 	@JsonIgnore
 	public Collection<Cours> getListeCours() {
 		return listeCours;
@@ -52,15 +98,47 @@ public class Formation {
 		this.listeCours = listeCours;
 	}
 
-	public Formation(long id, String titre, Date dateCreation, User auteur, Collection<Cours> listeCours,
-			String categorie) {
-		super();
-		this.id = id;
-		this.titre = titre;
-		this.dateCreation = dateCreation;
-		this.auteur = auteur;
-		this.listeCours = listeCours;
-		this.categorie = categorie;
+	
+
+	public float getPrix() {
+		return prix;
+	}
+
+
+	public void setPrix(float prix) {
+		this.prix = prix;
+	}
+
+
+	public int getNbrCours() {
+		return nbrCours;
+	}
+
+
+	public void setNbrCours(int nbrCours) {
+		this.nbrCours = nbrCours;
+	}
+
+
+	public String getInfo() {
+		return info;
+	}
+
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 
@@ -97,17 +175,27 @@ public class Formation {
 	}
 
 
-
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public Date getDateCreation() {
 		return dateCreation;
 	}
 
 
-
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public void setDateCreation(Date dateCreation) {
 		this.dateCreation = dateCreation;
 	}
 
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	public Date getDateMdf() {
+		return dateMdf;
+	}
+
+    
+	public void setDateMdf(Date dateMdf) {
+		this.dateMdf = dateMdf;
+	}
 
 
 	public User getAuteur() {

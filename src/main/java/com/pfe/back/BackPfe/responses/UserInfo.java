@@ -9,7 +9,7 @@ public class UserInfo {
 	private String nom;
 	private String prenom;
 	private String userName;
-	@DateTimeFormat (pattern = "Yyyy-mm-dd")
+	@DateTimeFormat (pattern = "yyyy-mm-dd")
 	private Date date_de_naissance;
 	private String Genre;
 	private String numero_de_telephone;
@@ -134,9 +134,6 @@ public class UserInfo {
 
 	public void setRoles(Object roles) {
 		this.roles = roles;
-	}
-
-	
-	
+	}	
 	
 }

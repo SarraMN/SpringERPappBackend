@@ -1,6 +1,7 @@
 package com.pfe.back.BackPfe.entities;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @Table(name = "Cours")
 @Entity
@@ -22,24 +25,63 @@ public class Cours {
 	@Column(name = "Titre")
 	private String titre;
 	
-	@Column(name = "description")
+	@Column(columnDefinition="TEXT")
 	private String description;
 	
 	@Column(name = "Date_Creation")
 	@DateTimeFormat (pattern = "Yyyy-mm-dd")
 	private Date dateCreation;
 	
+	@Column(name = "Date_Modification")
+	@DateTimeFormat (pattern = "Yyyy-mm-dd")
+	private Date dateMdf;
 	
-	@ManyToOne
-	private Formation formation;
+	@Column(columnDefinition="TEXT")
+	private String objectif;
 	
-	public Cours(long id, String titre, String description, Date dateCreation, Formation formation) {
+    
+	private String etat;
+
+	
+	public Cours(long id, String titre, String description, Date dateCreation, Date dateMdf, String objectif,
+			String etat, Formation formation) {
 		super();
 		this.id = id;
 		this.titre = titre;
 		this.description = description;
 		this.dateCreation = dateCreation;
+		this.dateMdf = dateMdf;
+		this.objectif = objectif;
+		this.etat = etat;
 		this.formation = formation;
+	}
+
+	public String getEtat() {
+		return etat;
+	}
+
+	public void setEtat(String etat) {
+		this.etat = etat;
+	}
+
+	public String getObjectif() {
+		return objectif;
+	}
+
+	public void setObjectif(String objectif) {
+		this.objectif = objectif;
+	}
+
+	@ManyToOne
+	private Formation formation;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	public Date getDateMdf() {
+		return dateMdf;
+	}
+
+	public void setDateMdf(Date dateMdf) {
+		this.dateMdf = dateMdf;
 	}
 
 	public long getId() {
@@ -65,7 +107,8 @@ public class Cours {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public Date getDateCreation() {
 		return dateCreation;
 	}
