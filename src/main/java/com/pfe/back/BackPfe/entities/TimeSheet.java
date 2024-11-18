@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -26,6 +27,7 @@ public class TimeSheet {
 
 	private double hoursWorked;
 
+	@Lob
 	private String description; // Optional description of the work
 
 	private String taskTitle; // Title of the task being logged

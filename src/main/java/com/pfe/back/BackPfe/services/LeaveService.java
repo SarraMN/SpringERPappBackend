@@ -31,7 +31,38 @@ public class LeaveService {
 
 	public Leave createLeave(Leave leave) {
 		leave.setStatus(State.PENDING);
-		return leaveRepository.save(leave);
+		Leave createdLeave = leaveRepository.save(leave);
+
+		// Send notification email to HR
+		sendNewLeaveNotificationEmail(leave);
+
+		return createdLeave;
+	}
+
+	private void sendNewLeaveNotificationEmail(Leave leave) {
+		// Prepare the email details
+		SimpleMailMessage email = new SimpleMailMessage();
+		email.setFrom("amdounisirrine90@gmail.com");
+		email.setTo(leave.getApprovedBy().getEmail()); // rh e-mail adress
+		email.setSubject("New Leave Request: " + leave.getType());
+
+		// Compose a professional email body
+		String emailBody = String.format(
+				"Dear HR Team,\n\n" + "A new leave request has been submitted.\n\n" + "Leave Details:\n"
+						+ "Employee Name: %s\n" + "Type: %s\n" + "Start Date: %s\n" + "End Date: %s\n"
+						+ "Description: %s\n\n" + "Please log in to the system to review and process the request.\n\n"
+						+ "Best regards,\n" + "Leave Management System",
+				leave.getRequestedBy().getNom(), // Use the employee's name
+				leave.getType(), leave.getStartDate(), leave.getEndDate(), leave.getDescription());
+
+		email.setText(emailBody);
+
+		// Send the email
+		try {
+			javaMailSender.send(email);
+		} catch (Exception e) {
+			System.out.println("Failed to send new leave notification email: " + e.getMessage());
+		}
 	}
 
 	public void deleteLeave(Long id) {
@@ -124,7 +155,6 @@ public class LeaveService {
 		// Prepare the email details
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setFrom("amdounisirrine90@gmail.com");
-		;
 		email.setTo(leaveToUpdate.getRequestedBy().getEmail());
 		email.setSubject("Leave Rejected: " + leaveToUpdate.getType());
 

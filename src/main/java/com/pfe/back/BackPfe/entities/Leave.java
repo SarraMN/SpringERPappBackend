@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -38,6 +39,10 @@ public class Leave {
 	@ManyToOne
 	private User approvedBy;
 
+	@Lob
+	private String description; // Description of the leave request
+
+	// Getters and Setters
 	public Long getId() {
 		return id;
 	}
@@ -92,5 +97,13 @@ public class Leave {
 
 	public void setApprovedBy(User approvedBy) {
 		this.approvedBy = approvedBy;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
