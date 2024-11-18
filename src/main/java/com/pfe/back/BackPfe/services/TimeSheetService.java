@@ -71,16 +71,13 @@ public class TimeSheetService {
 		TimeSheet existingTimeSheet = getTimeSheetById(id);
 
 		// Update the fields of the existing timesheet with values from the updated one
-		existingTimeSheet.setEmployee(updatedTimeSheet.getEmployee()); // Assuming employee field is part of TimeSheet
-		existingTimeSheet.setDate(updatedTimeSheet.getDate()); // Assuming date field is part of TimeSheet
-		existingTimeSheet.setHoursWorked(updatedTimeSheet.getHoursWorked()); // Assuming hoursWorked field is part of
-																				// TimeSheet
-		existingTimeSheet.setState(updatedTimeSheet.getState()); // Assuming state field is part of TimeSheet
-		existingTimeSheet.setDescription(updatedTimeSheet.getDescription()); // Assuming description field is part of
-																				// TimeSheet
-
-		// Optionally, you can add validation or logic to check if any fields are null
-		// or invalid
+		existingTimeSheet.setEmployee(updatedTimeSheet.getEmployee());
+		existingTimeSheet.setApprovedBy(updatedTimeSheet.getApprovedBy());
+		existingTimeSheet.setDate(updatedTimeSheet.getDate());
+		existingTimeSheet.setHoursWorked(updatedTimeSheet.getHoursWorked());
+		existingTimeSheet.setTaskTitle(updatedTimeSheet.getTaskTitle());
+		existingTimeSheet.setState(updatedTimeSheet.getState());
+		existingTimeSheet.setDescription(updatedTimeSheet.getDescription());
 
 		// Save the updated timesheet and return it
 		return timeSheetRepository.save(existingTimeSheet);

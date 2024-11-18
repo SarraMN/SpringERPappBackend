@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Table(name = "timesheet")
 @Entity
 public class TimeSheet {
 
