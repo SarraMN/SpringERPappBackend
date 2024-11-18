@@ -18,7 +18,7 @@ public class SendEmailService {
 	@Autowired 
 	private EmailRepository ER;
 	
-	public void sendEmail(emailinfo maill)
+	public void sendEmail(EmailInfo maill)
 	{
 		System.out.println("sending mail");
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -30,8 +30,8 @@ public class SendEmailService {
 		System.out.println("sent mail...");	
 	}
 	
-	   public ResponseEntity ajouterMail(@RequestBody emailinfo mail1){
-	        emailinfo mail2 = ER.save(mail1);
+	   public ResponseEntity ajouterMail(@RequestBody EmailInfo mail1){
+	        EmailInfo mail2 = ER.save(mail1);
 	        return new ResponseEntity<>(mail2, HttpStatus.CREATED);
 	    }
 

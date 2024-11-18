@@ -20,23 +20,12 @@ public class SendEmailController {
 	private SendEmailService SES;
 	
 	
-	/*
-	 * @PreAuthorize("hasRole('ROLE_CRC') or hasRole('ROLE_AGENT')")
-	 */	    @PostMapping("/Envoie")
-	    public ResponseEntity<?> EnvoyerMail(@RequestBody emailinfo mail1){
-			System.out.println("coucou sou");
+	 @PostMapping("/Envoie")
+    public ResponseEntity<?> EnvoyerMail(@RequestBody EmailInfo mail1){
+		System.out.println("coucou sou");
 
-	        SES.sendEmail(mail1);
-	        return new ResponseEntity(HttpStatus.OK);
-	    }
-	 
-	 
-		/*
-		 * @PreAuthorize("hasRole('ROLE_CRC') or hasRole ('ROLE_AGENT') or hasRole ('ROLE_BOSBE')"
-		 * )
-		 * 
-		 * @PostMapping("/ajouter") public ResponseEntity ajouterM(@RequestBody
-		 * emailinfo mail1){ return SES.ajouterMail(mail1); }
-		 * 
-		 */
+        SES.sendEmail(mail1);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

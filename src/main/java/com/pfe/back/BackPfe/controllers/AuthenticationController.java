@@ -27,7 +27,7 @@ import  com.pfe.back.BackPfe.responses.UserInfo;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class AuthenticationController {
 
 	@Autowired
@@ -49,14 +49,10 @@ public class AuthenticationController {
 		User user=(User)authentication.getPrincipal();
 	
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		
 		String jwtToken=jWTTokenHelper.generateToken(user.getUsername());
 
 		LoginResponse response=new LoginResponse();
 		response.setToken(jwtToken);
-		
-
 		return ResponseEntity.ok(response);
 		
 	}

@@ -1,4 +1,4 @@
-package  com.pfe.back.BackPfe.entities;
+package com.pfe.back.BackPfe.entities;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,39 +19,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Table(name = "AUTH_USER_DETAILS")
+@Table(name = "user")
 @Entity
 public class User implements UserDetails {
-	
-
-
-
-	public User(long id, String userName, String password, String nom, String prenom, String email,
-			Date date_de_naissance, String numero_de_telephone, boolean enabled, String etat_civil, String genre,
-			String adresse, Authority authority, Date lastLogin, Date createdAt, Date updatedAt) {
-		super();
-		this.id = id;
-		this.userName = userName;
-		this.password = password;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.email = email;
-		this.date_de_naissance = date_de_naissance;
-		this.numero_de_telephone = numero_de_telephone;
-		this.enabled = enabled;
-		this.etat_civil = etat_civil;
-		this.genre = genre;
-		this.adresse = adresse;
-		this.authority = authority;
-		this.lastLogin = lastLogin;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-	}
-
-	public User() {
-		
-	}
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,50 +41,31 @@ public class User implements UserDetails {
 
 	@Column(name = "email")
 	private String email;
-	
-	
-	@DateTimeFormat (pattern = "yyyy-MM-dd")
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "Date_de_naissance")
 	private Date date_de_naissance;
-	
+
 	@Column(name = "numero_de_telephone")
 	private String numero_de_telephone;
 
 	@Column(name = "enabled")
-	private boolean enabled=true;
-	
+	private boolean enabled = true;
+
 	@Column(name = "Etat_civil")
 	private String etat_civil;
 
 	@Column(name = "Genre")
 	private String genre;
-	
+
 	@Column(name = "Adresse")
 	private String adresse;
 
-	
-	/*
-	 * @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	 * 
-	 * @JoinTable(name = "AUTH_USER_AUTHORITY", joinColumns
-	 * = @JoinColumn(referencedColumnName = "id"),inverseJoinColumns
-	 * = @JoinColumn(referencedColumnName ="id")) private List<Authority>
-	 * authorities;
-	 */
-	
-	  @ManyToOne() 
-	  private Authority authority;
-	 
-	@Column(name = "Last_login")
-		private Date lastLogin;
-	
-	public Date getLastLogin() {
-		return lastLogin;
-	}
+	@ManyToOne
+	private Authority authority;
 
-	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
-	}
+	@Column(name = "Last_login")
+	private Date lastLogin;
 
 	@Column(name = "CREATED_ON")
 	private Date createdAt;
@@ -122,56 +73,70 @@ public class User implements UserDetails {
 	@Column(name = "UPDATED_ON")
 	private Date updatedAt;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {	
-		return Arrays.asList(new SimpleGrantedAuthority(authority.getRoleName()));
-	}
+	@Column(name = "Solde_Leaves", nullable = false)
+	private int soldeLeaves = 30; // Default initial balance
 
-	public Authority getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(Authority authority) {
+	public User(long id, String userName, String password, String nom, String prenom, String email,
+			Date date_de_naissance, String numero_de_telephone, boolean enabled, String etat_civil, String genre,
+			String adresse, Authority authority, Date lastLogin, Date createdAt, Date updatedAt, int soldeLeaves) {
+		this.id = id;
+		this.userName = userName;
+		this.password = password;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.date_de_naissance = date_de_naissance;
+		this.numero_de_telephone = numero_de_telephone;
+		this.enabled = enabled;
+		this.etat_civil = etat_civil;
+		this.genre = genre;
+		this.adresse = adresse;
 		this.authority = authority;
+		this.lastLogin = lastLogin;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.soldeLeaves = soldeLeaves;
+	}
+
+	public User() {
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Arrays.asList(new SimpleGrantedAuthority(authority.getRoleName()));
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return this.password;
 	}
 
-
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return this.userName;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return this.enabled;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return this.enabled;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return this.enabled;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return this.enabled;
 	}
 
+	// Getters and Setters
 	public long getId() {
 		return id;
 	}
@@ -204,13 +169,12 @@ public class User implements UserDetails {
 		this.updatedAt = updatedAt;
 	}
 
-	
-	 @JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public Date getDate_de_naissance() {
 		return date_de_naissance;
 	}
-    
-	 @JsonFormat(pattern = "yyyy-MM-dd")
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public void setDate_de_naissance(Date date_de_naissance) {
 		this.date_de_naissance = date_de_naissance;
 	}
@@ -247,12 +211,9 @@ public class User implements UserDetails {
 		this.email = email;
 	}
 
-	
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
@@ -280,6 +241,29 @@ public class User implements UserDetails {
 
 	public void setGenre(String genre) {
 		this.genre = genre;
-	}	
+	}
 
+	public Authority getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(Authority authority) {
+		this.authority = authority;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public int getSoldeLeaves() {
+		return soldeLeaves;
+	}
+
+	public void setSoldeLeaves(int soldeLeaves) {
+		this.soldeLeaves = soldeLeaves;
+	}
 }

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
-@Table(name = "AUTH_AUTHORITY")
+@Table(name = "role")
 @Entity
 public class Authority implements GrantedAuthority {
 	
@@ -19,9 +19,7 @@ public class Authority implements GrantedAuthority {
 	
 	@Column(name = "ROLE_NAME")
 	private String roleName;
-	
-	
-    
+
 	public Authority() {
 		
 	}
@@ -32,11 +30,8 @@ public class Authority implements GrantedAuthority {
 		this.roleName = roleName;
 	}
 
-
-
 	@Override
 	public String getAuthority() {
-		// TODO Auto-generated method stub
 		return roleName;
 	}
 
@@ -65,11 +60,4 @@ public class Authority implements GrantedAuthority {
 	}
 
 
-
-
-
-
-
-	
-	
 }

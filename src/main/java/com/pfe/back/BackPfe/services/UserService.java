@@ -11,24 +11,23 @@ public interface UserService {
 	public User findByUserName(String userName);
 	
 	public User add(User user);
+	
 	public User findById(Long id);
 
 	public List<User> getUsers();
 	
-
 	public User findByEmail(String destinataire);
-	public User update(Long id,User user);
 
 	public User update_motdepasse(long id, String password);
 	
 	public List<User> getUsersSaufAdmin();
 	
-	public List<User> getlisteFormateurs();
+	public List<User> getlisteEmployees();
 	
-	public List<User> getlisteCandidats();
+	public List<User> getListRhs();
 
+	public void deleteUser(Long id);
 
-	
-
+	public User updateUser(Long id, User user);
 
 }

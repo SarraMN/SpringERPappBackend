@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class emailinfo implements Serializable{
+public class EmailInfo implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long idmail;
 	private String destinataire;
@@ -41,23 +41,14 @@ public class emailinfo implements Serializable{
 		this.topic = topic;
 	}
 	
-	public emailinfo(Long idmail, String destinataire, String body, String topic, String typedestinataire) {
+	public EmailInfo(Long idmail, String destinataire, String body, String topic, String typedestinataire) {
 		this.idmail = idmail;
 		this.destinataire = destinataire;
 		this.body = body;
 		this.topic = topic;
 		this.typedestinataire = typedestinataire;
 	}
-	public emailinfo() {
+	public EmailInfo() {
 		super();
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -32,7 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		System.out.println("configurehttpfo9ha");
 
 		auth.inMemoryAuthentication().withUser("Pardeep").password(passwordEncoder().encode("test@123"))
 				.authorities("USER", "ADMIN");
@@ -59,7 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		//on a jouter le filtre lors de l'envoie d'une requette
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint).and()
-				.authorizeRequests((request) -> request.antMatchers("/api/v1/auth/login", "/api/signup","/mail/Envoie","/Forgetpassword/sendmail","/Forgetpassword/update").permitAll()
+				.authorizeRequests((request) -> request.antMatchers("/api/auth/login", "/api/signup","/mail/Envoie","/Forgetpassword/sendmail","/Forgetpassword/update").permitAll()
 						.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
 				.addFilterBefore(new JWTAuthenticationFilter(userService, jWTTokenHelper),
 						UsernamePasswordAuthenticationFilter.class);
