@@ -1,5 +1,6 @@
 package com.pfe.back.BackPfe.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,19 @@ public class LeaveService {
 
 	public List<Leave> getAllLeaves() {
 		return leaveRepository.findAll();
+	}
+	public List<Leave> GetLeavesByUser(Long id) {
+		List<Leave> allLeaves = getAllLeaves();
+		
+		List<Leave> listeLeave = new ArrayList<Leave>();
+        for(int i=0;i<allLeaves.size();i++) {
+			
+			if(allLeaves.get(i).getRequestedBy().getId()==id) 
+			{
+				listeLeave.add(allLeaves.get(i));
+			}
+        }
+		return listeLeave;
 	}
 
 	public Leave createLeave(Leave leave) {

@@ -33,6 +33,12 @@ public class LeaveController {
 		return ResponseEntity.ok(leaves);
 	}
 
+	  @GetMapping("/GetLeavesByUser/{id}")
+	  public List<Leave> getlisteLeaves(@PathVariable(name="id") Long id) { 
+		  return leaveService.GetLeavesByUser(id);
+	  
+	  }
+	  
 	// Create a new leave request
 	@PostMapping
 	public ResponseEntity<Leave> createLeave(@RequestBody Leave leave) {
@@ -41,7 +47,7 @@ public class LeaveController {
 	}
 
 	// Delete a leave request by ID
-	@DeleteMapping("/{id}")
+	@DeleteMapping("delete/{id}")
 	public ResponseEntity<Void> deleteLeave(@PathVariable Long id) {
 		leaveService.deleteLeave(id);
 		return ResponseEntity.noContent().build();

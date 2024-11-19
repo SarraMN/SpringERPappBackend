@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class UserInfo {
 	private long id;
 	private String nom;
@@ -23,7 +25,11 @@ public class UserInfo {
     private Date createdAt;
     @DateTimeFormat (pattern = "Yyyy-mm-dd")
 	private Date updatedAt;
-
+	private Long  idimage;
+    @DateTimeFormat (pattern = "Yyyy-mm-dd")
+    private Date lastLogin;
+    private int soldeLeaves;
+    
 	public long getId() {
 		return id;
 	}
@@ -135,5 +141,32 @@ public class UserInfo {
 	public void setRoles(Object roles) {
 		this.roles = roles;
 	}	
+	
+	public Long getIdimage() {
+		return idimage;
+	}
+
+	public void setIdimage(Long idimage) {
+		this.idimage = idimage;
+	}
+	
+	@JsonFormat(pattern = "yyyy-MM-dd")
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+	@JsonFormat(pattern = "yyyy-MM-dd")
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+	
+	public int getSoldeLeaves() {
+		return soldeLeaves;
+	}
+
+	public void setSoldeLeaves(int soldeLeaves) {
+		this.soldeLeaves = soldeLeaves;
+	}
 	
 }

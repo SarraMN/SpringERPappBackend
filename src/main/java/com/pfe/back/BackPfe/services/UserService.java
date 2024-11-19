@@ -29,5 +29,8 @@ public interface UserService {
 	public void deleteUser(Long id);
 
 	public User updateUser(Long id, User user);
+	
+	public boolean verifPassword(Long id, String password);
+
 
 }

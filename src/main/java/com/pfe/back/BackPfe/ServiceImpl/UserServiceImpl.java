@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
 			user2.setUserName(user.getUsername());
 			user2.setNumero_de_telephone(user.getNumero_de_telephone());
 			user2.setSoldeLeaves(user.getSoldeLeaves());
+			user2.setImage(user.getImage());
 			return userRepo.save(user2);
 		}
 		return null;
@@ -129,7 +130,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findById(Long id) {
 		Optional<User> user = userRepo.findById(id);
+		
 		return user.isPresent() ? user.get() : null;
 	}
-
+	
+	@Override
+	public boolean verifPassword(Long id, String password) {
+		Optional<User> user1=userRepo.findById(id);
+		User user2=user1.get();
+		if(passwordEncoder.matches(password,user2.getPassword()))
+		{return true;}
+		else return false;
+	}
 }

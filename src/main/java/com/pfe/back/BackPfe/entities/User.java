@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,7 +29,7 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "User_Name", unique = true)
+	@Column(name = "User_Name")
 	private String userName;
 
 	@Column(name = "Mot_de_passe")
@@ -76,9 +78,14 @@ public class User implements UserDetails {
 	@Column(name = "Solde_Leaves", nullable = false)
 	private int soldeLeaves = 30; // Default initial balance
 
+	  @ManyToOne() 
+	private FileDB image;
+	  
+
+	  
 	public User(long id, String userName, String password, String nom, String prenom, String email,
 			Date date_de_naissance, String numero_de_telephone, boolean enabled, String etat_civil, String genre,
-			String adresse, Authority authority, Date lastLogin, Date createdAt, Date updatedAt, int soldeLeaves) {
+			String adresse, Authority authority, Date lastLogin, Date createdAt, Date updatedAt, int soldeLeaves,FileDB image) {
 		this.id = id;
 		this.userName = userName;
 		this.password = password;
@@ -96,6 +103,7 @@ public class User implements UserDetails {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.soldeLeaves = soldeLeaves;
+		this.image = image;
 	}
 
 	public User() {
@@ -265,5 +273,13 @@ public class User implements UserDetails {
 
 	public void setSoldeLeaves(int soldeLeaves) {
 		this.soldeLeaves = soldeLeaves;
+	}
+	
+	public FileDB getImage() {
+		return image;
+	}
+
+	public void setImage(FileDB image) {
+		this.image = image;
 	}
 }

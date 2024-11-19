@@ -55,15 +55,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		System.out.println("configurehttp");
 
-		//on a jouter le filtre lors de l'envoie d'une requette
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
-				.authenticationEntryPoint(authenticationEntryPoint).and()
-				.authorizeRequests((request) -> request.antMatchers("/api/auth/login", "/api/signup","/mail/Envoie","/Forgetpassword/sendmail","/Forgetpassword/update").permitAll()
-						.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
-				.addFilterBefore(new JWTAuthenticationFilter(userService, jWTTokenHelper),
-						UsernamePasswordAuthenticationFilter.class);
+		.authenticationEntryPoint(authenticationEntryPoint).and()
+		.authorizeRequests((request) -> request.antMatchers("/api/auth/login", "/api/signup","/mail/Envoie","/Forgetpassword/sendmail","/Forgetpassword/update","/file/upload","/file/files","/files/1").permitAll()
+		  .antMatchers(HttpMethod.OPTIONS,
+		  "/**").permitAll().anyRequest().authenticated()).addFilterBefore(new JWTAuthenticationFilter(userService, jWTTokenHelper),
+				UsernamePasswordAuthenticationFilter.class);
 
-		http.csrf().disable().cors().and().headers().frameOptions().disable();
+http.csrf().disable().cors().and().headers().frameOptions().disable();
 
 	}
 

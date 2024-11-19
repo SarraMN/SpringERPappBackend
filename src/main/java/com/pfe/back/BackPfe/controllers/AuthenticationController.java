@@ -74,7 +74,13 @@ public class AuthenticationController {
 		userInfo.setRoles(userObj.getAuthorities().toArray());
 		userInfo.setUserName(userObj.getUsername());
 		userInfo.setPassword(userObj.getPassword());
-		
+		if(userObj.getImage()==null)
+		{
+			userInfo.setIdimage((long) 0);
+		}
+		else
+		userInfo.setIdimage(userObj.getImage().getId());
+		userInfo.setSoldeLeaves(userObj.getSoldeLeaves());
 		return ResponseEntity.ok(userInfo);
 		
 		
