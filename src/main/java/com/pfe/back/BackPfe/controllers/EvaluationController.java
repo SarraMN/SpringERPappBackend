@@ -31,10 +31,8 @@ public class EvaluationController {
 
 	// Create a new evaluation
 	@PostMapping
-	public ResponseEntity<EvaluationResponse> createEvaluation(@RequestBody EvaluationResponse evaluation) {
-//		Evaluation savedEvaluation = evaluationService.saveEvaluation(evaluation);
-		System.out.println(evaluation);
-		return new ResponseEntity<>(evaluation, HttpStatus.CREATED);
+	public Evaluation createEvaluation(@RequestBody Evaluation evaluation) {
+		return evaluationService.saveEvaluation(evaluation);
 	}
 
 	// Retrieve all evaluations
