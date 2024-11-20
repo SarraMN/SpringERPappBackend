@@ -10,6 +10,7 @@ public class EvaluationResponse {
 	String evaluator;
 	double score;
 	LocalDate date;
+	 String feedback;
 
 	public EvaluationResponse() {
 		// TODO Auto-generated constructor stub
@@ -17,10 +18,11 @@ public class EvaluationResponse {
 
 	public EvaluationResponse(Evaluation eval) {
 		this.id = eval.getId();
-		this.employee = eval.getEmployee().getUsername();
-		this.evaluator = eval.getEvaluator().getUsername();
+		this.employee = eval.getEmployee().getNom()+' '+eval.getEmployee().getPrenom();
+		this.evaluator =  eval.getEvaluator().getNom()+' '+eval.getEvaluator().getPrenom();
 		this.score = eval.getScore();
 		this.date = eval.getEvaluationDate();
+		this.feedback=eval.getFeedback();
 	}
 
 	public long getId() {
@@ -41,6 +43,13 @@ public class EvaluationResponse {
 
 	public String getEvaluator() {
 		return evaluator;
+	}
+	public void setfeedback(String feedback) {
+		this.feedback = feedback;
+	}
+	
+	public String getfeedback() {
+		return feedback;
 	}
 
 	public void setEvaluator(String evaluator) {
