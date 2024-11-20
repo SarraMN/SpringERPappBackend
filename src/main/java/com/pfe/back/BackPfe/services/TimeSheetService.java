@@ -6,8 +6,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.pfe.back.BackPfe.entities.Leave;
 import com.pfe.back.BackPfe.entities.State;
 import com.pfe.back.BackPfe.entities.TimeSheet;
 import com.pfe.back.BackPfe.entities.User;
@@ -21,7 +24,8 @@ public class TimeSheetService {
 	private TimeSheetRepo timeSheetRepository;
 	@Autowired
 	private UserDetailsRepository UserDetailsRepository;
-
+	@Autowired
+	private JavaMailSender javaMailSender;
 	// Retrieve all timesheets
 	public List<TimeSheet> getAllTimeSheets() {
 		return timeSheetRepository.findAll();
@@ -54,6 +58,7 @@ public class TimeSheetService {
 		timeSheet.setState(State.APPROVED);
 		Optional<User> byId = UserDetailsRepository.findById(approvedBy);
 		timeSheet.setApprovedBy(byId.get());
+		sendEmail(timeSheet);
 		return timeSheetRepository.save(timeSheet);
 	}
 
@@ -63,6 +68,7 @@ public class TimeSheetService {
 		timeSheet.setState(State.REJECTED);
 		Optional<User> byId = UserDetailsRepository.findById(rejectedBy);
 		timeSheet.setApprovedBy(byId.get()); // Optionally set the approver
+		sendEmail(timeSheet);
 		return timeSheetRepository.save(timeSheet);
 	}
 
@@ -99,5 +105,31 @@ public class TimeSheetService {
 		return timeSheetRepository.save(existingTimeSheet);
 	}
 
-	
+	private void sendEmail(TimeSheet timeSheet) {
+		// Prepare the email details
+		SimpleMailMessage email = new SimpleMailMessage();
+		email.setFrom("amdounisirrine90@gmail.com");
+		email.setTo(timeSheet.getEmployee().getEmail());
+		email.setSubject("votre feuille de temps est traitée");
+
+		// Compose a professional email body
+		String emailBody = String.format(
+			    "Votre feuille de temps est traitée par %s,\n\n" +
+			    "Le résultat est : %s.\n\n" +
+			    "Si vous avez des questions, n'hésitez pas à nous contacter.\n\n" +
+			    "Cordialement,\n" +
+			    "L'équipe RH",
+			    timeSheet.getApprovedBy().getNom(), // Approver's name
+			    timeSheet.getState() // Result state
+			);
+
+		email.setText(emailBody);
+
+		// Send the email
+		try {
+			javaMailSender.send(email);
+		} catch (Exception e) {
+			System.out.println("Failed to send approval email: " + e.getMessage());
+		}
+	}
 }
