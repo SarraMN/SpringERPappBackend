@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -75,17 +73,16 @@ public class User implements UserDetails {
 	@Column(name = "UPDATED_ON")
 	private Date updatedAt;
 
-	@Column(name = "Solde_Leaves", nullable = false)
-	private int soldeLeaves = 30; // Default initial balance
+	@Column(name = "Solde_Leaves")
+	private int soldeLeaves = 30;
 
-	  @ManyToOne() 
+	@ManyToOne()
 	private FileDB image;
-	  
 
-	  
 	public User(long id, String userName, String password, String nom, String prenom, String email,
 			Date date_de_naissance, String numero_de_telephone, boolean enabled, String etat_civil, String genre,
-			String adresse, Authority authority, Date lastLogin, Date createdAt, Date updatedAt, int soldeLeaves,FileDB image) {
+			String adresse, Authority authority, Date lastLogin, Date createdAt, Date updatedAt, int soldeLeaves,
+			FileDB image) {
 		this.id = id;
 		this.userName = userName;
 		this.password = password;
@@ -274,7 +271,7 @@ public class User implements UserDetails {
 	public void setSoldeLeaves(int soldeLeaves) {
 		this.soldeLeaves = soldeLeaves;
 	}
-	
+
 	public FileDB getImage() {
 		return image;
 	}

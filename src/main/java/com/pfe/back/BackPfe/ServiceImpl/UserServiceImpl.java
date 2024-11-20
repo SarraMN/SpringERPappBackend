@@ -130,16 +130,24 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findById(Long id) {
 		Optional<User> user = userRepo.findById(id);
-		
+
 		return user.isPresent() ? user.get() : null;
 	}
-	
+
 	@Override
 	public boolean verifPassword(Long id, String password) {
-		Optional<User> user1=userRepo.findById(id);
-		User user2=user1.get();
-		if(passwordEncoder.matches(password,user2.getPassword()))
-		{return true;}
-		else return false;
+		Optional<User> user1 = userRepo.findById(id);
+		User user2 = user1.get();
+		if (passwordEncoder.matches(password, user2.getPassword())) {
+			return true;
+		} else
+			return false;
+	}
+
+	@Override
+	public void updateUserSolde(User user, int solde) {
+
+		user.setSoldeLeaves(solde);
+		userRepo.save(user);
 	}
 }

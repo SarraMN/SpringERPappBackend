@@ -50,17 +50,13 @@ public class LeaveService {
 		}
 		return listeLeave;
 	}
-	
+
 	public List<Leave> getPendingLeaves() {
-	    return leaveRepository.findAll().stream()
-	            .filter(leave -> leave.getStatus() == State.PENDING)
-	            .toList();
+		return leaveRepository.findAll().stream().filter(leave -> leave.getStatus() == State.PENDING).toList();
 	}
-	
+
 	public List<Leave> getNonPendingLeaves() {
-	    return leaveRepository.findAll().stream()
-	            .filter(leave -> leave.getStatus() != State.PENDING)
-	            .toList();
+		return leaveRepository.findAll().stream().filter(leave -> leave.getStatus() != State.PENDING).toList();
 	}
 
 	public Leave createLeave(Leave leave) {
@@ -88,7 +84,7 @@ public class LeaveService {
 		}
 
 		// Save the updated user
-		userService.updateUserSolde(requestedBy.getId(), solde);
+		userService.updateUserSolde(loadedUser, solde);
 		// Send notification email to HR
 		// sendNewLeaveNotificationEmail(leave);
 
@@ -126,17 +122,17 @@ public class LeaveService {
 		leaveRepository.deleteById(id);
 	}
 
-	public Leave approveLeave(Long id, User approvedBy) {
+	public Leave approveLeave(Long id, Long approvedById) {
 		Optional<Leave> leaveOptional = leaveRepository.findById(id);
+		Optional<User> loadedUser = UserDetailsRepository.findById(approvedById);
 
-		if (leaveOptional.isPresent()) {
+		if (leaveOptional.isPresent() && loadedUser.isPresent()) {
 			Leave leaveToUpdate = leaveOptional.get();
 
-			Leave updatedLeave = leaveRepository.save(leaveToUpdate);
-
 			// Update leave status and approver
-			updatedLeave.setStatus(State.APPROVED);
-			updatedLeave.setApprovedBy(approvedBy);
+			leaveToUpdate.setStatus(State.APPROVED);
+			leaveToUpdate.setApprovedBy(loadedUser.get());
+			Leave updatedLeave = leaveRepository.save(leaveToUpdate);
 
 			// Send approval email
 			sendApprovalEmail(leaveToUpdate);
@@ -172,15 +168,16 @@ public class LeaveService {
 		}
 	}
 
-	public Leave rejectLeave(Long id, User disapprovedBy) {
+	public Leave rejectLeave(Long id, Long disapprovedById) {
 		Optional<Leave> leaveOptional = leaveRepository.findById(id);
+		Optional<User> loadedUser = UserDetailsRepository.findById(disapprovedById);
 
-		if (leaveOptional.isPresent()) {
+		if (leaveOptional.isPresent() && loadedUser.isPresent()) {
 			Leave leaveToUpdate = leaveOptional.get();
 
 			// Update leave status and approver
 			leaveToUpdate.setStatus(State.REJECTED);
-			leaveToUpdate.setApprovedBy(disapprovedBy);
+			leaveToUpdate.setApprovedBy(loadedUser.get());
 			Leave updatedLeave = leaveRepository.save(leaveToUpdate);
 
 			// Send rejection email

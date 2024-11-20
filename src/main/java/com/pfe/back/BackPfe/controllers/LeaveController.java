@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfe.back.BackPfe.entities.Leave;
-import com.pfe.back.BackPfe.entities.User;
 import com.pfe.back.BackPfe.services.LeaveService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -34,7 +33,6 @@ public class LeaveController {
 		List<Leave> leaves = leaveService.getAllLeaves();
 		return ResponseEntity.ok(leaves);
 	}
-	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Leave> getLeaveById(@PathVariable Long id) {
@@ -45,18 +43,18 @@ public class LeaveController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 	}
-	
-	@GetMapping("/pending")
-    public ResponseEntity<List<Leave>> getPendingLeaves() {
-        List<Leave> pendingLeaves = leaveService.getPendingLeaves();
-        return ResponseEntity.ok(pendingLeaves);
-    }
 
-    @GetMapping("/non-pending")
-    public ResponseEntity<List<Leave>> getNonPendingLeaves() {
-        List<Leave> nonPendingLeaves = leaveService.getNonPendingLeaves();
-        return ResponseEntity.ok(nonPendingLeaves);
-    }
+	@GetMapping("/pending")
+	public ResponseEntity<List<Leave>> getPendingLeaves() {
+		List<Leave> pendingLeaves = leaveService.getPendingLeaves();
+		return ResponseEntity.ok(pendingLeaves);
+	}
+
+	@GetMapping("/non-pending")
+	public ResponseEntity<List<Leave>> getNonPendingLeaves() {
+		List<Leave> nonPendingLeaves = leaveService.getNonPendingLeaves();
+		return ResponseEntity.ok(nonPendingLeaves);
+	}
 
 	@GetMapping("/GetLeavesByUser/{id}")
 	public List<Leave> getlisteLeaves(@PathVariable(name = "id") Long id) {
@@ -79,9 +77,9 @@ public class LeaveController {
 	}
 
 	// Approve a leave request
-	@PutMapping("/{id}/approve")
-	public ResponseEntity<Leave> approveLeave(@PathVariable Long id, @RequestBody User approvedBy) {
-		Leave approvedLeave = leaveService.approveLeave(id, approvedBy);
+	@PutMapping("/{id}/approve/{approvedById}")
+	public ResponseEntity<Leave> approveLeave(@PathVariable Long id, @PathVariable Long approvedById) {
+		Leave approvedLeave = leaveService.approveLeave(id, approvedById);
 		if (approvedLeave == null) {
 			return ResponseEntity.notFound().build();
 		}
@@ -89,9 +87,9 @@ public class LeaveController {
 	}
 
 	// Reject a leave request
-	@PutMapping("/{id}/reject")
-	public ResponseEntity<Leave> rejectLeave(@PathVariable Long id, @RequestBody User disapprovedBy) {
-		Leave rejectedLeave = leaveService.rejectLeave(id, disapprovedBy);
+	@PutMapping("/{id}/reject/{disapprovedById}")
+	public ResponseEntity<Leave> rejectLeave(@PathVariable Long id, @PathVariable Long disapprovedById) {
+		Leave rejectedLeave = leaveService.rejectLeave(id, disapprovedById);
 		if (rejectedLeave == null) {
 			return ResponseEntity.notFound().build();
 		}

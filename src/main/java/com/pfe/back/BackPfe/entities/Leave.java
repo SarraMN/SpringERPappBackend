@@ -18,92 +18,95 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 public class Leave {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String type; // Sick, Vacation, etc.
+	private String type; // Sick, Vacation, etc.
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate startDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate endDate;
 
-    @Enumerated(EnumType.STRING) // Save enum values as strings in the database
-    private State status;
+	@Enumerated(EnumType.STRING) // Save enum values as strings in the database
+	private State status;
 
-    @ManyToOne
-    private User requestedBy;
+	@ManyToOne
+	private User requestedBy;
 
-    @ManyToOne
-    private User approvedBy;
+	@ManyToOne
+	private User approvedBy;
 
-    @Lob
-    private String description; // Description of the leave request
+	@Lob
+	private String description; // Description of the leave request
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+	@ManyToOne()
+	private FileDB pieceJointe;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	// Getters and Setters
+	public Long getId() {
+		return id;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
+	public LocalDate getStartDate() {
+		return startDate;
+	}
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
+	public LocalDate getEndDate() {
+		return endDate;
+	}
 
-    public State getStatus() {
-        return status;
-    }
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
 
-    public void setStatus(State status) {
-        this.status = status;
-    }
+	public State getStatus() {
+		return status;
+	}
 
-    public User getRequestedBy() {
-        return requestedBy;
-    }
+	public void setStatus(State status) {
+		this.status = status;
+	}
 
-    public void setRequestedBy(User requestedBy) {
-        this.requestedBy = requestedBy;
-    }
+	public User getRequestedBy() {
+		return requestedBy;
+	}
 
-    public User getApprovedBy() {
-        return approvedBy;
-    }
+	public void setRequestedBy(User requestedBy) {
+		this.requestedBy = requestedBy;
+	}
 
-    public void setApprovedBy(User approvedBy) {
-        this.approvedBy = approvedBy;
-    }
+	public User getApprovedBy() {
+		return approvedBy;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setApprovedBy(User approvedBy) {
+		this.approvedBy = approvedBy;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
