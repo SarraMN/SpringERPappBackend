@@ -102,6 +102,14 @@ public class Leave {
 		this.approvedBy = approvedBy;
 	}
 
+	public FileDB getPieceJointe() {
+		return pieceJointe;
+	}
+
+	public void setPieceJointe(FileDB pieceJointe) {
+		this.pieceJointe = pieceJointe;
+	}
+
 	public String getDescription() {
 		return description;
 	}

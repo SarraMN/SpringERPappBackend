@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfe.back.BackPfe.entities.Evaluation;
-import com.pfe.back.BackPfe.entities.User;
 import com.pfe.back.BackPfe.responses.EvaluationResponse;
 import com.pfe.back.BackPfe.services.EvaluationService;
 
@@ -45,8 +44,8 @@ public class EvaluationController {
 
 	// Retrieve evaluations by employee (User)
 	@GetMapping("/employee/{employeeId}")
-	public ResponseEntity<List<Evaluation>> getEvaluationsByEmployee(@RequestBody User employee) {
-		List<Evaluation> evaluations = evaluationService.getEvaluationsByEmployee(employee);
+	public ResponseEntity<List<Evaluation>> getEvaluationsByEmployee(@PathVariable Long employeeId) {
+		List<Evaluation> evaluations = evaluationService.getEvaluationsByEmployee(employeeId);
 		return new ResponseEntity<>(evaluations, HttpStatus.OK);
 	}
 

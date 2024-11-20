@@ -3,19 +3,23 @@ package com.pfe.back.BackPfe.services;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pfe.back.BackPfe.entities.Evaluation;
-import com.pfe.back.BackPfe.entities.User;
 import com.pfe.back.BackPfe.repository.EvaluationRepo;
+import com.pfe.back.BackPfe.repository.UserDetailsRepository;
 
 @Service
 public class EvaluationService {
 
 	@Autowired
 	private EvaluationRepo evaluationRepository;
+
+	@Autowired
+	private UserDetailsRepository userDetailsRepository;
 
 	// Create a new evaluation
 	public Evaluation saveEvaluation(Evaluation evaluation) {
@@ -28,9 +32,13 @@ public class EvaluationService {
 		return evaluationRepository.findAll();
 	}
 
-	// Retrieve evaluations by employee (User)
-	public List<Evaluation> getEvaluationsByEmployee(User employee) {
-		return evaluationRepository.findByEmployee(employee);
+	public List<Evaluation> getEvaluationsByEmployee(Long employeeId) {
+		// Fetch all evaluations
+		List<Evaluation> allEvaluations = evaluationRepository.findAll();
+
+		// Filter evaluations belonging to the given employee
+		return allEvaluations.stream().filter(evaluation -> evaluation.getEmployee().getId() == employeeId)
+				.collect(Collectors.toList());
 	}
 
 	// Retrieve a specific evaluation by ID
