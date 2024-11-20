@@ -1,8 +1,10 @@
 package com.pfe.back.BackPfe.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,13 +34,36 @@ public class LeaveController {
 		List<Leave> leaves = leaveService.getAllLeaves();
 		return ResponseEntity.ok(leaves);
 	}
+	
 
-	  @GetMapping("/GetLeavesByUser/{id}")
-	  public List<Leave> getlisteLeaves(@PathVariable(name="id") Long id) { 
-		  return leaveService.GetLeavesByUser(id);
-	  
-	  }
-	  
+	@GetMapping("/{id}")
+	public ResponseEntity<Leave> getLeaveById(@PathVariable Long id) {
+		Optional<Leave> leave = leaveService.getLeaveById(id);
+		if (leave.isPresent()) {
+			return ResponseEntity.ok(leave.get());
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+	}
+	
+	@GetMapping("/pending")
+    public ResponseEntity<List<Leave>> getPendingLeaves() {
+        List<Leave> pendingLeaves = leaveService.getPendingLeaves();
+        return ResponseEntity.ok(pendingLeaves);
+    }
+
+    @GetMapping("/non-pending")
+    public ResponseEntity<List<Leave>> getNonPendingLeaves() {
+        List<Leave> nonPendingLeaves = leaveService.getNonPendingLeaves();
+        return ResponseEntity.ok(nonPendingLeaves);
+    }
+
+	@GetMapping("/GetLeavesByUser/{id}")
+	public List<Leave> getlisteLeaves(@PathVariable(name = "id") Long id) {
+		return leaveService.GetLeavesByUser(id);
+
+	}
+
 	// Create a new leave request
 	@PostMapping
 	public ResponseEntity<Leave> createLeave(@RequestBody Leave leave) {

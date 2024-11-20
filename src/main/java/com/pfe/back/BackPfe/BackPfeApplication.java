@@ -90,6 +90,56 @@ public class BackPfeApplication {
 			userDetailsRepository.save(user);
 			userDetailsRepository.save(user2);
 		}
+
+		User user3 = new User();
+		user3.setUserName("employee1");
+		user3.setNom("John");
+		user3.setPrenom("Doe");
+		user3.setPassword(passwordEncoder.encode("employee123"));
+		user3.setAdresse("Tunis");
+		user3.setEmail("employee1@example.com");
+		user3.setNumero_de_telephone("+216 55555555");
+		try {
+			user3.setDate_de_naissance(formatter.parse("1995-06-15"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		user3.setGenre("Homme");
+		user3.setEtat_civil("Celibataire");
+		user3.setAuthority(employeeRole);
+
+		if (userDetailsRepository.findByUserName(user.getUsername()) == null) {
+			userDetailsRepository.save(user);
+		}
+		if (userDetailsRepository.findByUserName(user2.getUsername()) == null) {
+			userDetailsRepository.save(user2);
+		}
+		if (userDetailsRepository.findByUserName(user3.getUsername()) == null) {
+			userDetailsRepository.save(user3);
+		}
+		
+		// Création d'un utilisateur RH
+	    User rhUser = new User();
+	    rhUser.setUserName("rh_user");
+	    rhUser.setNom("Ben");
+	    rhUser.setPrenom("Ali");
+	    rhUser.setPassword(passwordEncoder.encode("rh123"));
+	    rhUser.setAdresse("Tunis");
+	    rhUser.setEmail("rh_user@example.com");
+	    rhUser.setNumero_de_telephone("+216 12345678");
+	    try {
+	        rhUser.setDate_de_naissance(formatter.parse("1985-09-10"));
+	    } catch (ParseException e) {
+	        e.printStackTrace();
+	    }
+	    rhUser.setGenre("Homme");
+	    rhUser.setEtat_civil("Marié");
+	    rhUser.setAuthority(rhRole);
+
+	    // Sauvegarder l'utilisateur RH s'il n'existe pas déjà
+	    if (userDetailsRepository.findByUserName(rhUser.getUsername()) == null) {
+	        userDetailsRepository.save(rhUser);
+	    }
 		EmailInfo M = new EmailInfo();
 		M.setBody("hello");
 		M.setDestinataire("amdounisirine80@gmail.com");

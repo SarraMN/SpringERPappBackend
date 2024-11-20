@@ -13,6 +13,7 @@ import com.pfe.back.BackPfe.entities.Leave;
 import com.pfe.back.BackPfe.entities.State;
 import com.pfe.back.BackPfe.entities.User;
 import com.pfe.back.BackPfe.repository.LeaveRepo;
+import com.pfe.back.BackPfe.repository.UserDetailsRepository;
 
 @Service
 public class LeaveService {
@@ -26,29 +27,70 @@ public class LeaveService {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private UserDetailsRepository UserDetailsRepository;
+
 	public List<Leave> getAllLeaves() {
 		return leaveRepository.findAll();
 	}
+
+	public Optional<Leave> getLeaveById(Long id) {
+		return leaveRepository.findById(id);
+	}
+
 	public List<Leave> GetLeavesByUser(Long id) {
 		List<Leave> allLeaves = getAllLeaves();
-		
+
 		List<Leave> listeLeave = new ArrayList<Leave>();
-        for(int i=0;i<allLeaves.size();i++) {
-			
-			if(allLeaves.get(i).getRequestedBy().getId()==id) 
-			{
+		for (int i = 0; i < allLeaves.size(); i++) {
+
+			if (allLeaves.get(i).getRequestedBy().getId() == id) {
 				listeLeave.add(allLeaves.get(i));
 			}
-        }
+		}
 		return listeLeave;
+	}
+	
+	public List<Leave> getPendingLeaves() {
+	    return leaveRepository.findAll().stream()
+	            .filter(leave -> leave.getStatus() == State.PENDING)
+	            .toList();
+	}
+	
+	public List<Leave> getNonPendingLeaves() {
+	    return leaveRepository.findAll().stream()
+	            .filter(leave -> leave.getStatus() != State.PENDING)
+	            .toList();
 	}
 
 	public Leave createLeave(Leave leave) {
 		leave.setStatus(State.PENDING);
 		Leave createdLeave = leaveRepository.save(leave);
 
+		// Calculate the number of days requested
+		long daysRequested = java.time.temporal.ChronoUnit.DAYS.between(createdLeave.getStartDate(),
+				createdLeave.getEndDate()) + 1;
+
+		System.out.println("start date" + createdLeave.getStartDate());
+		System.out.println("start date" + createdLeave.getEndDate());
+
+		// Update user's leave balance
+		User requestedBy = createdLeave.getRequestedBy();
+		User loadedUser = UserDetailsRepository.getById(requestedBy.getId());
+		int currentSolde = loadedUser.getSoldeLeaves();
+		System.out.println("currentSolde: " + currentSolde);
+		int solde = currentSolde - (int) daysRequested;
+		System.out.println("solde " + solde);
+
+		if (currentSolde < daysRequested) {
+			System.out.println("Insufficient leave balance for approval.");
+			return null;
+		}
+
+		// Save the updated user
+		userService.updateUserSolde(requestedBy.getId(), solde);
 		// Send notification email to HR
-		sendNewLeaveNotificationEmail(leave);
+		// sendNewLeaveNotificationEmail(leave);
 
 		return createdLeave;
 	}
@@ -57,6 +99,7 @@ public class LeaveService {
 		// Prepare the email details
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setFrom("amdounisirrine90@gmail.com");
+
 		email.setTo(leave.getApprovedBy().getEmail()); // rh e-mail adress
 		email.setSubject("New Leave Request: " + leave.getType());
 
@@ -89,28 +132,11 @@ public class LeaveService {
 		if (leaveOptional.isPresent()) {
 			Leave leaveToUpdate = leaveOptional.get();
 
-			// Calculate the number of days requested
-			long daysRequested = java.time.temporal.ChronoUnit.DAYS.between(leaveToUpdate.getStartDate(),
-					leaveToUpdate.getEndDate()) + 1;
+			Leave updatedLeave = leaveRepository.save(leaveToUpdate);
 
 			// Update leave status and approver
-			leaveToUpdate.setStatus(State.APPROVED);
-			leaveToUpdate.setApprovedBy(approvedBy);
-
-			// Update user's leave balance
-			User requestedBy = leaveToUpdate.getRequestedBy();
-			int currentSolde = requestedBy.getSoldeLeaves();
-
-			if (currentSolde < daysRequested) {
-				System.out.println("Insufficient leave balance for approval.");
-			}
-
-			requestedBy.setSoldeLeaves(currentSolde - (int) daysRequested);
-
-			// Save the updated user
-			userService.updateUser(requestedBy.getId(), requestedBy);
-
-			Leave updatedLeave = leaveRepository.save(leaveToUpdate);
+			updatedLeave.setStatus(State.APPROVED);
+			updatedLeave.setApprovedBy(approvedBy);
 
 			// Send approval email
 			sendApprovalEmail(leaveToUpdate);
