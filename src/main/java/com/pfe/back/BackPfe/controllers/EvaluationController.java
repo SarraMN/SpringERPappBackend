@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pfe.back.BackPfe.entities.Evaluation;
 import com.pfe.back.BackPfe.entities.User;
+import com.pfe.back.BackPfe.responses.EvaluationResponse;
 import com.pfe.back.BackPfe.services.EvaluationService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -30,15 +31,17 @@ public class EvaluationController {
 
 	// Create a new evaluation
 	@PostMapping
-	public ResponseEntity<Evaluation> createEvaluation(@RequestBody Evaluation evaluation) {
-		Evaluation savedEvaluation = evaluationService.saveEvaluation(evaluation);
-		return new ResponseEntity<>(savedEvaluation, HttpStatus.CREATED);
+	public ResponseEntity<EvaluationResponse> createEvaluation(@RequestBody EvaluationResponse evaluation) {
+//		Evaluation savedEvaluation = evaluationService.saveEvaluation(evaluation);
+		System.out.println(evaluation);
+		return new ResponseEntity<>(evaluation, HttpStatus.CREATED);
 	}
 
 	// Retrieve all evaluations
 	@GetMapping
-	public ResponseEntity<List<Evaluation>> getAllEvaluations() {
-		List<Evaluation> evaluations = evaluationService.getAllEvaluations();
+	public ResponseEntity<List<EvaluationResponse>> getAllEvaluations() {
+		List<EvaluationResponse> evaluations = evaluationService.getAllEvaluations().stream()
+				.map(EvaluationResponse::new).toList();
 		return new ResponseEntity<>(evaluations, HttpStatus.OK);
 	}
 
