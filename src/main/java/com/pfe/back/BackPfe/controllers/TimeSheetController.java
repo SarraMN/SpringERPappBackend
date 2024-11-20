@@ -32,6 +32,15 @@ public class TimeSheetController {
 		return timeSheetService.getAllTimeSheets();
 	}
 
+	@GetMapping("/getAllTraited")
+	public List<TimeSheet> getAllTraitedTimeSheets() {
+		return timeSheetService.getAllTraitedTimeSheets();
+	}
+	
+	@GetMapping("/getAllNotTraited")
+	public List<TimeSheet> getAllNotTraitedTimeSheets() {
+		return timeSheetService.getAllNotTraitedTimeSheets();
+	}
 	// Endpoint to get a timesheet by its ID
 	@GetMapping("/{id}")
 	public TimeSheet getTimeSheetById(@PathVariable Long id) {
@@ -60,14 +69,14 @@ public class TimeSheetController {
 	}
 
 	// Endpoint to approve a timesheet
-	@PutMapping("/approve/{id}")
-	public TimeSheet approveTimeSheet(@PathVariable Long id, @RequestBody User approvedBy) {
+	@PutMapping("/approve/{id}/{approvedBy}")
+	public TimeSheet approveTimeSheet(@PathVariable Long id, @PathVariable  Long approvedBy) {
 		return timeSheetService.approveTimeSheet(id, approvedBy);
 	}
 
 	// Endpoint to reject a timesheet
-	@PutMapping("/reject/{id}")
-	public TimeSheet rejectTimeSheet(@PathVariable Long id, @RequestBody User rejectedBy) {
+	@PutMapping("/reject/{id}/{rejectedBy}")
+	public TimeSheet rejectTimeSheet(@PathVariable Long id, @PathVariable Long rejectedBy) {
 		return timeSheetService.rejectTimeSheet(id, rejectedBy);
 	}
 

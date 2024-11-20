@@ -2,6 +2,8 @@ package com.pfe.back.BackPfe.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,18 +12,29 @@ import com.pfe.back.BackPfe.entities.State;
 import com.pfe.back.BackPfe.entities.TimeSheet;
 import com.pfe.back.BackPfe.entities.User;
 import com.pfe.back.BackPfe.repository.TimeSheetRepo;
+import com.pfe.back.BackPfe.repository.UserDetailsRepository;
 
 @Service
 public class TimeSheetService {
 
 	@Autowired
 	private TimeSheetRepo timeSheetRepository;
+	@Autowired
+	private UserDetailsRepository UserDetailsRepository;
 
 	// Retrieve all timesheets
 	public List<TimeSheet> getAllTimeSheets() {
 		return timeSheetRepository.findAll();
 	}
 
+	public List<TimeSheet> getAllTraitedTimeSheets() {
+		// TODO Auto-generated method stub
+		return getAllTimeSheets().stream().filter(t->!t.getState().equals(State.PENDING)).collect(Collectors.toList());
+	}
+	public List<TimeSheet> getAllNotTraitedTimeSheets() {
+		// TODO Auto-generated method stub
+		return getAllTimeSheets().stream().filter(t->t.getState().equals(State.PENDING)).collect(Collectors.toList());
+	}
 	// Retrieve a single timesheet by ID
 	public TimeSheet getTimeSheetById(Long id) {
 		return timeSheetRepository.findById(id)
@@ -35,18 +48,21 @@ public class TimeSheetService {
 	}
 
 	// Approve a timesheet
-	public TimeSheet approveTimeSheet(Long id, User approvedBy) {
+	public TimeSheet approveTimeSheet(Long id, Long approvedBy) {
+		System.out.println("srour");
 		TimeSheet timeSheet = getTimeSheetById(id);
 		timeSheet.setState(State.APPROVED);
-		timeSheet.setApprovedBy(approvedBy);
+		Optional<User> byId = UserDetailsRepository.findById(approvedBy);
+		timeSheet.setApprovedBy(byId.get());
 		return timeSheetRepository.save(timeSheet);
 	}
 
 	// Reject a timesheet
-	public TimeSheet rejectTimeSheet(Long id, User rejectedBy) {
+	public TimeSheet rejectTimeSheet(Long id, Long rejectedBy) {
 		TimeSheet timeSheet = getTimeSheetById(id);
 		timeSheet.setState(State.REJECTED);
-		timeSheet.setApprovedBy(rejectedBy); // Optionally set the approver
+		Optional<User> byId = UserDetailsRepository.findById(rejectedBy);
+		timeSheet.setApprovedBy(byId.get()); // Optionally set the approver
 		return timeSheetRepository.save(timeSheet);
 	}
 
@@ -83,4 +99,5 @@ public class TimeSheetService {
 		return timeSheetRepository.save(existingTimeSheet);
 	}
 
+	
 }
